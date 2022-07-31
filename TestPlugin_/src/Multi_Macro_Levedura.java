@@ -4,7 +4,7 @@ import ij.IJ;
 import ij.ImagePlus;
 import ij.plugin.PlugIn;
 
-public class Macro_Levedura implements PlugIn {
+public class Multi_Macro_Levedura implements PlugIn {
 	
 	public void run(String arg) {
 		ImagePlus imagem = IJ.getImage();
@@ -23,10 +23,8 @@ public class Macro_Levedura implements PlugIn {
 		
 		imagem.setRoi(bounds);
 		imagem = imagem.crop();
-		imagem.setTitle(imagemNome+"-croped.tif");
-		imagem.show();
 		imagem.updateAndDraw();
-		
-		IJ.save(imagem, IJ.getDirectory("Destino")+imagem.getTitle());
+		imagem.show();
+		imagem.setTitle(imagemNome+"-croped.tif");
 	}
 }
