@@ -14,19 +14,22 @@ public class Macro_Levedura implements PlugIn {
 		imagem = imagem.crop();
 		ImagePlus imagemCopy = imagem.duplicate();
 		
-		IJ.run(imagemCopy, "8-bit", "");
-		IJ.run(imagemCopy, "Median...", "radius=20");
-		IJ.setThreshold(imagemCopy, 172, 255);
-		IJ.run(imagemCopy, "Convert to Mask", "");
-		IJ.doWand(imagemCopy, 1068, 964, 0.0, "Legacy");
-		Rectangle bounds = imagemCopy.getRoi().getBounds();
+		try {
+			IJ.run(imagemCopy, "8-bit", "");
+			IJ.run(imagemCopy, "Median...", "radius=18");
+			IJ.setThreshold(imagemCopy, 155, 255);
+			IJ.run(imagemCopy, "Convert to Mask", "");
+			IJ.doWand(imagemCopy, imagemCopy.getWidth()/2, imagemCopy.getHeight()/2, 0.0, "Legacy");
+			Rectangle bounds = imagemCopy.getRoi().getBounds();
+			
+			imagem.setRoi(bounds);
+			imagem = imagem.crop();
+			imagem.show();
+			imagem.updateAndDraw();
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		}
 		
-		imagem.setRoi(bounds);
-		imagem = imagem.crop();
-		imagem.setTitle(imagemNome+"-croped.tif");
-		imagem.show();
-		imagem.updateAndDraw();
-		
-		IJ.save(imagem, IJ.getDirectory("Destino")+imagem.getTitle());
+		IJ.saveAs(imagem, "tif", IJ.getDirectory("Destino")+imagemNome + "-croped");
 	}
 }
